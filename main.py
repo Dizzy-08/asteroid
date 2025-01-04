@@ -48,12 +48,15 @@ def main():
             pygame.display.flip()
 
     # --- Game Over Screen ---
-    def show_game_over():
+    def show_game_over(score):
         font = pygame.font.Font(None, 74)
         game_over_text = font.render("Game Over", True, "white")
         game_over_rect = game_over_text.get_rect(
             center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4)
         )
+
+        score_text = font.render(f"Score: {score}", True, "white")
+        score_rect = score_text.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2))
 
         main_menu_text = font.render("Main Menu", True, "white")
         main_menu_rect = main_menu_text.get_rect(
@@ -83,6 +86,8 @@ def main():
             screen.blit(quit_text, quit_rect)
             pygame.display.flip()
         return False  # Return False to quit the game
+
+    score = 0
 
     # --- Game Loop ---
     while True:
@@ -135,12 +140,18 @@ def main():
                     if asteroid.collisions(shot):
                         asteroid.split()
                         shot.kill()
+                        score += 10
+
+            # Display score in screen
+            font = pygame.font.Font(None, 40)
+            score_text = font.render(f"Score {score}", True, "green")
+            screen.blit(score_text, (10, 10))
 
             pygame.display.flip()
             dt = clock.tick(60) / 1000
 
-        if (
-            not show_game_over()
+        if not show_game_over(
+            score
         ):  # Show game over screen and check if restart is clicked
             break  # Exit the main game loop if not restarting
 
