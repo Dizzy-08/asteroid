@@ -14,6 +14,40 @@ def main():
     clock = pygame.time.Clock()
     dt = 0
 
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+
+    # --- Menu Screen ---
+    font = pygame.font.Font(None, 74)
+    title_text = font.render("Asteroids", True, "white")
+    title_rect = title_text.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4))
+
+    start_text = font.render("Start", True, "white")
+    start_rect = start_text.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2.5))
+
+    quit_text = font.render("QUIT", True, "white")
+    quit_rect = quit_text.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 1.7))
+
+    in_menu = True
+    while in_menu:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if start_rect.collidepoint(event.pos):
+                    in_menu = False
+                if quit_rect.collidepoint(event.pos):
+                    pygame.quit()
+                    sys.exit()
+
+        screen.fill("black")
+        screen.blit(title_text, title_rect)
+        screen.blit(start_text, start_rect)
+        screen.blit(quit_text, quit_rect)
+        pygame.display.flip()
+
+    # GAME LOGIC
+
     x = SCREEN_WIDTH / 2
     y = SCREEN_HEIGHT / 2
 
